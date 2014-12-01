@@ -7,10 +7,10 @@ password = raw_input("Enter tunabrix password: ")
 
 gc = gspread.login('tunabrix@gmail.com', password)
 
-last_file = open("last_spreadsheet.txt", "r+")
-last_spreadsheet = str(last_file.readline())
+last_file = open("previous_spreadsheet.txt", "r+")
+previous_spreadsheet = str(last_file.readline())
 
-print "Last spreadsheet: "+last_spreadsheet
+print "Previous stored spreadsheet: "+previous_spreadsheet
 
 r  = requests.get("http://musical.epfl.ch")
 
@@ -27,16 +27,18 @@ for link in soup.find_all('a'):
 
 print spreadsheetlinks
 
-if len(spreadsheetlinks) is not 4:
-    raise("There are more than 4 spreadsheets on the page. Aborting for safety")
+#if len(spreadsheetlinks) is not 4:
+#    raise("There are more than 4 spreadsheets on the page. Aborting for safety")
 
-if last_spreadsheet == str(spreadsheetlinks[3]):
+newest_spreadsheet = spreadsheetlinks[-1]
+
+if previous_spreadsheet == str(newest_spreadsheet):
     print "No new spreadsheet. Finishing"
 else:
     print "Spreadsheet that will change:"
-    print spreadsheetlinks[3]
+    print newest_spreadsheet
     
-    spreadsheet = gc.open_by_url(spreadsheetlinks[3])
+    spreadsheet = gc.open_by_url(newest_spreadsheet)
     
     worksheet = spreadsheet.sheet1
     
@@ -48,6 +50,6 @@ else:
     
     worksheet.update_cells(cell_list)
     
-    last_file.write(str(spreadsheetlinks[3])) 
+    last_file.write(str(newest_spreadsheet)) 
 
 print "Job's Done. See ya!"
