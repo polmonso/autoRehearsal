@@ -5,9 +5,12 @@ import re
 import sys
 import requests
 
-last_spreadsheet_file = "previous_spreadsheet.txt"
+import os
+dir_name = os.path.dirname(__file__)
 
-with open('account', 'r') as f:
+last_spreadsheet_file = os.path.join(dir_name, "previous_spreadsheet.txt")
+
+with open(os.path.join(dir_name, 'account'), 'r') as f:
     email = f.readline()
     password = f.readline()
 
