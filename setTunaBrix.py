@@ -1,7 +1,6 @@
 import gspread
 from bs4 import BeautifulSoup
 
-import re
 import sys
 import requests
 
@@ -38,10 +37,9 @@ spreadsheetlinks = []
 for link in soup.find_all('a'):
     link_url = link.get('href')
     if '://docs.google.com' in link_url:
-        # In order to get the spreadsheet key:
-        # Find the last part of the url before /
-        # then, take away the final character '/'
-        s_key = re.findall(r"\w+/$", link_url)[-1][:-1]
+        s_key = link_url.split("/")[-1]
+        if s_key == '':
+            s_key = link_url.split("/")[-2]
         spreadsheetlinks.append(str(s_key))
 
 print "Found the following links:"
