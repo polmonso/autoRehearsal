@@ -19,7 +19,7 @@ with open(os.path.join(dir_name, 'account'), 'r') as f:
 
 try:
     with open(last_spreadsheet_file, "r") as f:
-        previous_spreadsheet = str(f.readline())
+        previous_spreadsheet = str(f.readline()).strip()
 except IOError:
     previous_spreadsheet = ''
 
@@ -68,10 +68,10 @@ for link in spreadsheetlinks[start_index:]:
     cell_list = worksheet.range('D21:D23')
 
     for cell in cell_list:
-        old_value = cell.value
+        old_value = cell.value.strip()
         if cell.value == '':
             cell.value = 'Tuna Brix'
-        new_value = cell.value
+        new_value = cell.value.strip()
         print old_value, '->', new_value
 
     worksheet.update_cells(cell_list)
